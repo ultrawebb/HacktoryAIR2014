@@ -1,0 +1,101 @@
+import ddf.minim.spi.*;
+import ddf.minim.signals.*;
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.ugens.*;
+import ddf.minim.effects.*;
+//working on a code for projection project that uses key commands with a Makey Makey for interactive fun
+
+
+sporeBot[] spores = new sporeBot[10];
+color[]palette=new color[8];
+int index;
+
+Minim minim;
+AudioSample W;
+AudioSample A;
+AudioSample S;
+AudioSample D;
+
+ void setup(){
+   size (480, 240);
+   minim = new Minim(this);
+   W = minim.loadSample("W.mp3", 512);
+   if ( W== null ) println("Didn't get W!");
+   A = minim.loadSample("A.mp3", 512);
+   if ( A == null ) println("Didn't get A!");
+   S = minim.loadSample("S.mp3", 512);
+   if (S == null ) println("Didn't get S!");
+   D= minim.loadSample("D.mp3", 512);
+   if ( D == null ) println("Didn't get D!");
+   
+   noStroke();
+   background(0);
+   smooth();
+   
+    palette[0]=(color(79, 214,  52));
+     palette[1]=(color( 16,  53,  10));
+     palette[2]=(color(41, 91,  64));
+     palette[3]=(color( 75, 223,  137));
+     palette[4]=(color( 23, 40, 34));
+     palette[5]=(color(65, 81, 115));
+     palette[6]=(color(72, 28, 17));
+     palette[7]=(color(123, 44, 24));
+   
+   for (int i=0; i<spores.length; i++){
+     for (int j= 0; j<100; j++){
+     } 
+     float x=random(width);
+     float y=random(height);
+     int r=i+2;
+     spores[i]=new sporeBot(x,y,r);
+   }
+ }
+ 
+ void draw() {
+   // fill all shapes with a solid black color with a very low opacity
+  fill(0,0,0,10);
+
+  // draw a rectangle that fills the whole screen
+  rect(0,0,width,height);
+
+  // fill all shapes with a random color from this point forward
+  fill(random(123), random(223), random(137));
+
+  // draw a small ellipse (10x10) at a random spot on the screen
+  ellipse(random(0,width), random(0,height), 10, 10);
+   for (int i=0; i<spores.length; i++){
+     spores[i].move();
+     spores[i].display();
+   } 
+   
+}
+ class sporeBot {
+  float x;
+  float y;
+  int diameter;
+  int index;
+  float speed = 10;
+  
+  sporeBot(float tempX, float tempY, int tempDiameter){
+    x=tempX;
+    y=tempY;
+    diameter=tempDiameter;
+}
+void move() {
+  x+=random(-speed, speed);
+  y+=random(-speed, speed);
+}
+void display(){
+  fill(random(123), random(223), random(137));
+  ellipse(x, y, diameter, diameter);
+   }
+    
+}  
+ void keyPressed() 
+{
+  if ( key == 'w' ) W.trigger();
+  if ( key == 'a' ) A.trigger();
+  if ( key == 's' ) S.trigger();
+  if ( key == 'd' ) D.trigger();
+}  
